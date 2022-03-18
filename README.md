@@ -22,6 +22,6 @@ cp -r vendor/ray/ray-di-for-larabel/Module .
 
 Add the following line to `bootstrap/app.php`.
 
-````
+```
 $app['router'] = new RayRouter($app['events'], $app, new Injector(new Module()));
 ```
