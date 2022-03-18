@@ -17,7 +17,7 @@ composer require ray/ray-di-for-laravel
 Copy the module that describes the binding.
 
 ```
-cp -r vendor/ray/ray-di-for-larabel/Module .
+cp -r vendor/ray/ray-di-for-laravel/Ray app
 ```
 
 Add the following line to `bootstrap/app.php`.

@@ -17,7 +17,7 @@ composer require ray/ray-di-for-laravel
 [束縛](https://ray-di.github.io/manuals/1.0/ja/bindings.html)を記述するモジュールをコピーします。
 
 ```
-cp -r vendor/ray/ray-di-for-larabel/Module ./app
+cp -r vendor/ray/ray-di-for-laravel/Ray app
 ```
 
 `bootstrap/app.php`に以下の行を加えます。
