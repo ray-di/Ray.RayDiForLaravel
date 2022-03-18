@@ -2,9 +2,9 @@
 
 English | [Japanese](README.ja.md)
 
-Ray.Di performs dependency resolution for Laravel controllers. It enables AOP for injected objects.
+[Ray.Di](https://ray-di.github.io/manuals/1.0/en/index.html) performs dependency resolution for Laravel controllers. It also allows AOP of controllers and dependent objects.
 
-If Ray.Di cannot be created by Ray.Di, the existing Laravel controller factory will create an instance, so there are no compatibility issues.
+If the controller cannot be created by Ray.Di, an existing Laravel controller factory will create an instance to maintain compatibility.
 
 ## Installation
 
@@ -22,6 +22,11 @@ cp -r vendor/ray/ray-di-for-larabel/Module .
 
 Add the following line to `bootstrap/app.php`.
 
+```php
+use App\Ray\Module;
+use App\RayRouter;
+use Ray\Di\Injector;
 ```
+```php
 $app['router'] = new RayRouter($app['events'], $app, new Injector(new Module()));
 ```
