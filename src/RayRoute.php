@@ -23,7 +23,7 @@ class RayRoute extends Route
     public function getController()
     {
         if (! $this->controller) {
-            $class = $this->getControllerClass();
+            $class = method_exists($this, 'getControllerClass') ? $this->getControllerClass() : $this->parseControllerCallback()[0];
             try {
                 $this->controller = $this->injector->getInstance($class);
             } catch (Unbound $e) {
