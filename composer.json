@@ -1,5 +1,7 @@
 {
     "name": "ray/ray-di-for-laravel",
+    "description": "Ray.Di for Laravel",
+    "keywords": ["di", "aop", "laravel"],
     "type": "library",
     "license": "MIT",
     "autoload": {
