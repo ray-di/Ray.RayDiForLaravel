@@ -18,15 +18,16 @@ Copy the module that describes the binding.
 cp -r vendor/ray/ray-di-for-laravel/Ray app
 ```
 
-Add the following line to `bootstrap/app.php`.
+Change the following lines in `bootstrap/app.php`.
 
 ```php
-use App\Ray\Module;
-use App\RayRouter;
-use Ray\Di\Injector;
-```
-```php
-$app['router'] = new RayRouter($app['events'], $app, new Injector(new Module()));
+- $app = new Illuminate\Foundation\Application(
+-     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+- );
++ $app = new Ray\RayDiForLaravel\Application(
++     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__),
++     new Ray\Di\Injector(new App\Ray\Module())
++ );
 ```
 
 ## Demo
