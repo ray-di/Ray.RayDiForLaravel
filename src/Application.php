@@ -17,10 +17,19 @@ class Application extends \Illuminate\Foundation\Application
 
     protected function resolve($abstract, $parameters = [], $raiseEvents = true)
     {
+        if ($this->shouldBeResolvedByIlluminate($abstract)) {
+            return parent::resolve($abstract, $parameters, $raiseEvents);
+        }
+
         try {
             return $this->injector->getInstance($abstract);
         } catch (Unbound $e) {
             return parent::resolve($abstract, $parameters, $raiseEvents);
         }
+    }
+
+    private function shouldBeResolvedByIlluminate(string $abstract): bool
+    {
+        return $abstract === strtolower($abstract);
     }
 }
