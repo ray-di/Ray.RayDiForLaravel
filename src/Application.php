@@ -10,7 +10,8 @@ class Application extends \Illuminate\Foundation\Application
     /** @var InjectorInterface */
     private $injector;
 
-    public function __construct(string $basePath, InjectorInterface $injector) {
+    public function __construct(string $basePath, InjectorInterface $injector)
+    {
         parent::__construct($basePath);
         $this->injector = $injector;
     }
@@ -22,10 +23,16 @@ class Application extends \Illuminate\Foundation\Application
         }
 
         try {
-            return $this->injector->getInstance($abstract);
+            $object = $this->injector->getInstance($abstract);
         } catch (Unbound $e) {
             return parent::resolve($abstract, $parameters, $raiseEvents);
         }
+
+        if ($raiseEvents) {
+            $this->fireResolvingCallbacks($abstract, $object);
+        }
+
+        return $object;
     }
 
     private function shouldBeResolvedByIlluminate(string $abstract): bool
