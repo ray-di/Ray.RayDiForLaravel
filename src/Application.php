@@ -2,13 +2,21 @@
 
 namespace Ray\RayDiForLaravel;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Ray\Di\Exception\Unbound;
 use Ray\Di\InjectorInterface;
+use Ray\RayDiForLaravel\Attribute\Injectable;
+use Ray\ServiceLocator\ServiceLocator;
+use ReflectionClass;
+use ReflectionException;
 
 class Application extends \Illuminate\Foundation\Application
 {
     /** @var InjectorInterface */
     private $injector;
+
+    /** @var string[] */
+    private $abstractsResolvedByRay = [];
 
     public function __construct(string $basePath, InjectorInterface $injector)
     {
@@ -18,25 +26,35 @@ class Application extends \Illuminate\Foundation\Application
 
     protected function resolve($abstract, $parameters = [], $raiseEvents = true)
     {
-        if ($this->shouldBeResolvedByIlluminate($abstract)) {
+        if (!$this->shouldBeResolvedByRay($abstract)) {
             return parent::resolve($abstract, $parameters, $raiseEvents);
         }
 
         try {
-            $object = $this->injector->getInstance($abstract);
+            return $this->injector->getInstance($abstract);
         } catch (Unbound $e) {
-            return parent::resolve($abstract, $parameters, $raiseEvents);
+            throw new BindingResolutionException("Failed to resolve {$abstract} by Ray's injector.", 0, $e);
         }
-
-        if ($raiseEvents) {
-            $this->fireResolvingCallbacks($abstract, $object);
-        }
-
-        return $object;
     }
 
-    private function shouldBeResolvedByIlluminate(string $abstract): bool
+    private function shouldBeResolvedByRay(string $abstract): bool
     {
-        return $abstract === strtolower($abstract);
+        if (in_array($abstract, $this->abstractsResolvedByRay, true)) {
+            return true;
+        }
+
+        try {
+            $reflectionClass = new ReflectionClass($abstract);
+        } catch (ReflectionException $e) {
+            return false;
+        }
+
+        $annotation = ServiceLocator::getReader()->getClassAnnotation($reflectionClass, Injectable::class);
+        if ($annotation === null) {
+            return false;
+        }
+
+        $this->abstractsResolvedByRay[] = $abstract;
+        return true;
     }
 }
