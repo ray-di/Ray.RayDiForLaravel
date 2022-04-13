@@ -9,6 +9,11 @@
             "Ray\\RayDiForLaravel\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Ray\\RayDiForLaravel\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Akihito Koriyama",
@@ -17,5 +22,9 @@
     ],
     "require": {
         "ray/di": "^2.14"
+    },
+    "require-dev": {
+        "laravel/framework": "^9.8",
+        "phpunit/phpunit": "^9.5"
     }
 }
