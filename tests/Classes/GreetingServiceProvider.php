@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ray\RayDiForLaravel\Classes;
 
 use Illuminate\Support\ServiceProvider;
 
-class GreetingServiceProvider extends ServiceProvider
+final class GreetingServiceProvider extends ServiceProvider
 {
     public function register(): void
     {

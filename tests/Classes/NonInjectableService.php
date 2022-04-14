@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ray\RayDiForLaravel\Classes;
 
 final class NonInjectableService
 {
-    private GreetingInterface $greeting;
-
-    public function __construct(GreetingInterface $greeting)
+    public function __construct(private GreetingInterface $greeting)
     {
-        $this->greeting = $greeting;
     }
-
 
     public function run(): string
     {

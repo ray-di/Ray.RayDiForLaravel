@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ray\RayDiForLaravel;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -13,10 +15,10 @@ use ReflectionException;
 class Application extends \Illuminate\Foundation\Application
 {
     /** @var InjectorInterface */
-    private $injector;
+    private InjectorInterface $injector;
 
     /** @var string[] */
-    private $abstractsResolvedByRay = [];
+    private array $abstractsResolvedByRay = [];
 
     public function __construct(string $basePath, InjectorInterface $injector)
     {
@@ -45,7 +47,7 @@ class Application extends \Illuminate\Foundation\Application
 
         try {
             $reflectionClass = new ReflectionClass($abstract);
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException) {
             return false;
         }
 
