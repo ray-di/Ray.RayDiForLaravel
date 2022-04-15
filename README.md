@@ -30,6 +30,38 @@ Change the following lines in `bootstrap/app.php`.
 + );
 ```
 
+Add the `Ray\RayDiForLaravel\Attribute\Injectable` Attribute to classes or interfaces you want to resolve by Ray.DI.
+
+
+This class will be resolved by Ray.DI.
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Ray\RayDiForLaravel\Attribute\Injectable;
+
+#[Injectable]
+class HelloController extends Controller
+{
+
+}
+```
+
+This one will be resolved by the existing Laravel service container.
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+// no attributes
+class MyController extends Controller
+{
+
+}
+```
+
 ## Demo
 
 See [hello-ray-di-for-laravel](https://github.com/koriym/hello-ray-di-for-laravel) demo code.

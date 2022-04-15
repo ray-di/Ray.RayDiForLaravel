@@ -20,13 +20,44 @@ composer require ray/ray-di-for-laravel
 cp -r vendor/ray/ray-di-for-laravel/Ray app
 ```
 
-`bootstrap/app.php`に以下の行を加えます。
+`bootstrap/app.php`の以下の行を変更します。
 
 ```php
-use App\Ray\Module;
-use App\RayRouter;
-use Ray\Di\Injector;
+- $app = new Illuminate\Foundation\Application(
+-     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+- );
++ $app = new Ray\RayDiForLaravel\Application(
++     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__),
++     new Ray\Di\Injector(new App\Ray\Module())
++ );
 ```
+
+`Ray\RayDiForLaravel\Attribute\Injectable`アトリビュートをRay.DIによって解決したいクラス・インターフェースに付加します。
+
+下記クラスはRay.DIによって解決されます。
 ```php
-$app['router'] = new RayRouter($app['events'], $app, new Injector(new Module()));
+<?php
+
+namespace App\Http\Controllers;
+
+use Ray\RayDiForLaravel\Attribute\Injectable;
+
+#[Injectable]
+class HelloController extends Controller
+{
+
+}
+```
+
+下記は既存のLaravelのサービスコンテナによって解決されます。
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+// アトリビュートなし
+class HelloController extends Controller
+{
+
+}
 ```
