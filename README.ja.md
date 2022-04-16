@@ -2,9 +2,9 @@
 
 [English](README.md) | Japanese
 
-Laravelのコントローラーの依存解決を[Ray.Di](https://ray-di.github.io/manuals/1.0/en/index.html)が行います。コントローラーと依存オブジェクトのAOPも可能にします。
+Laravelの依存解決を[Ray.Di](https://ray-di.github.io/manuals/1.0/en/index.html)が行います。依存オブジェクトのAOPも可能にします。
 
-Ray.Diによる生成ができない場合には、既存のLaravelのコントローラーファクトリーがインスタンス生成して互換性を維持します。
+Ray.Diによる生成を行わない場合には、既存のLaravelのサービスコンテナがインスタンス生成して互換性を維持します。
 
 ## インストール
 
@@ -32,9 +32,9 @@ cp -r vendor/ray/ray-di-for-laravel/Ray app
 + );
 ```
 
-`Ray\RayDiForLaravel\Attribute\Injectable`アトリビュートをRay.DIによって解決したいクラス・インターフェースに付加します。
+`Ray\RayDiForLaravel\Attribute\Injectable`アトリビュートをRay.Diによって解決したいクラス・インターフェースに付加します。
 
-下記クラスはRay.DIによって解決されます。
+下記クラスはRay.Diによって解決されます。
 ```php
 <?php
 

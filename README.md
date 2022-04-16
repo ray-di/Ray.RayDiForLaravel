@@ -2,7 +2,7 @@
 
 English | [Japanese](README.ja.md)
 
-In addition to the existing Laravel service container, [Ray.Di](https://ray-di.github.io/manuals/1.0/en/index.html) provides dependency resolution for contoroller. AOP can be applied to all injected objects.
+In addition to the existing Laravel service container, [Ray.Di](https://ray-di.github.io/manuals/1.0/en/index.html) provides dependency resolution. AOP can be applied to all injected objects.
 
 ## Installation
 
@@ -30,10 +30,10 @@ Change the following lines in `bootstrap/app.php`.
 + );
 ```
 
-Add the `Ray\RayDiForLaravel\Attribute\Injectable` Attribute to classes or interfaces you want to resolve by Ray.DI.
+Add the `Ray\RayDiForLaravel\Attribute\Injectable` Attribute to classes or interfaces you want to resolve by Ray.Di.
 
 
-This class will be resolved by Ray.DI.
+This class will be resolved by Ray.Di.
 ```php
 <?php
 
