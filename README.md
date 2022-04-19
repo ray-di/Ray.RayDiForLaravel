@@ -20,7 +20,7 @@ cp -r vendor/ray/ray-di-for-laravel/Ray app
 
 Change the following lines in `bootstrap/app.php`.
 
-```php
+```diff
 - $app = new Illuminate\Foundation\Application(
 -     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 - );

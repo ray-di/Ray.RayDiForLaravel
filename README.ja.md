@@ -22,7 +22,7 @@ cp -r vendor/ray/ray-di-for-laravel/Ray app
 
 `bootstrap/app.php`の以下の行を変更します。
 
-```php
+```diff
 - $app = new Illuminate\Foundation\Application(
 -     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 - );
