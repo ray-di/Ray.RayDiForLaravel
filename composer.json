@@ -20,10 +20,11 @@
             "email": "akihito.koriyama@gmail.com"
         }
     ],
-  "require": {
+    "require": {
         "php": ">=8.0",
         "ray/di": "^2.14",
-        "ray/compiler": "^1.8"
+        "ray/compiler": "^1.8",
+        "doctrine/cache": "^1.10 || ^2.2"
     },
     "require-dev": {
         "laravel/framework": "^9.8",
