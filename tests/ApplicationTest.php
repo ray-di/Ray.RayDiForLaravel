@@ -21,7 +21,7 @@ class ApplicationTest extends TestCase
         $service = $app->make(InjectableService::class);
         $result = $service->run();
 
-        $this->assertEquals('Hello, Ray!', $result);
+        $this->assertEquals('Hello, Ray! Intercepted.', $result);
     }
 
     public function testResolvedByIlluminateWhenNonMarkedClassGiven(): void
