@@ -24,7 +24,8 @@
         "php": ">=8.0",
         "ray/di": "^2.14",
         "ray/compiler": "^1.8",
-        "doctrine/cache": "^1.10 || ^2.2"
+        "doctrine/cache": "^1.10 || ^2.2",
+        "symfony/cache": "^5.4 || ^6.0"
     },
     "require-dev": {
         "laravel/framework": "^9.8",
