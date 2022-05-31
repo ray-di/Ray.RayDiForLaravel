@@ -18,7 +18,7 @@ class FakeCacheableContext extends AbstractInjectorContext
         parent::__construct($tmpDir . '/tmp/' . $dir);
     }
 
-    public function getModule(): AbstractModule
+    public function __invoke(): AbstractModule
     {
         $module = new Module();
         $module->install(new DiCompileModule(true));
@@ -26,6 +26,7 @@ class FakeCacheableContext extends AbstractInjectorContext
             protected function configure()
             {
                 $this->bind(FakeInterface::class)->toNull();
+                $this->bind(InjectableService::class);
             }
         });
 
