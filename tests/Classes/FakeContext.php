@@ -17,7 +17,7 @@ class FakeContext extends AbstractInjectorContext
         parent::__construct($tmpDir . '/tmp/' . $dir);
     }
 
-    public function getModule(): AbstractModule
+    public function __invoke(): AbstractModule
     {
         return new Module();
     }
