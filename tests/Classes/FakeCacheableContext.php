@@ -40,6 +40,6 @@ class FakeCacheableContext extends AbstractInjectorContext
 
     public function getCache(): CacheProvider
     {
-        return ApcuCacheProvider::create();
+        return new ApcuCacheProvider();
     }
 }
