@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ray\RayDiForLaravel;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Ray\Compiler\AbstractInjectorContext;
+use Ray\Compiler\ContextInjector;
 use Ray\Di\Exception\Unbound;
 use Ray\Di\InjectorInterface;
 use Ray\RayDiForLaravel\Attribute\Injectable;
@@ -20,10 +22,10 @@ class Application extends \Illuminate\Foundation\Application
     /** @var string[] */
     private array $abstractsResolvedByRay = [];
 
-    public function __construct(string $basePath, InjectorInterface $injector)
+    public function __construct(string $basePath, AbstractInjectorContext $injectorContext)
     {
         parent::__construct($basePath);
-        $this->injector = $injector;
+        $this->injector = ContextInjector::getInstance($injectorContext);
     }
 
     protected function resolve($abstract, $parameters = [], $raiseEvents = true)
