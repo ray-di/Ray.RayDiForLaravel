@@ -14,21 +14,24 @@ composer require ray/ray-di-for-laravel
 
 ## 利用
 
-[束縛](https://ray-di.github.io/manuals/1.0/ja/bindings.html)を記述するモジュールをコピーします。
+[束縛](https://ray-di.github.io/manuals/1.0/ja/bindings.html)を記述するモジュール、コンテキスト、生成されるファイルを保存するディレクトリをコピーします。
 
 ```
-cp -r vendor/ray/ray-di-for-laravel/Ray app
+cp -r vendor/ray/ray-di-for-laravel/RayDi app
+cp -r vendor/ray/ray-di-for-laravel/storage/ storage
 ```
 
 `bootstrap/app.php`の以下の行を変更します。
 
 ```diff
++ $basePath = $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__);
++ $context = getenv('APP_ENV') ?: 'local';
 - $app = new Illuminate\Foundation\Application(
 -     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 - );
 + $app = new Ray\RayDiForLaravel\Application(
-+     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__),
-+     new Ray\Di\Injector(new App\Ray\Module())
++     $basePath,
++     App\RayDi\Context\ContextProvider::get($basePath, $context)
 + );
 ```
 
@@ -61,3 +64,39 @@ class HelloController extends Controller
 
 }
 ```
+
+## コンテキスト
+
+[ContextProvider](RayDi/Context/ContextProvider.php) によって、アプリケーション実行時のコンテキストに応じたコンテキストクラスが生成されます。
+
+コンテキストクラスでモジュールとキャッシュを指定し、コンテキストに応じたインジェクターが選択されます。
+
+Ray.Di for Laravel では、組み込みコンテキストとして以下を提供しています。
+
+* [ProductionContext](RayDi/Context/ProductionContext.php)
+* [LocalContext](RayDi/Context/LocalContext.php)
+* [TestingContext](RayDi/Context/TestingContext.php)
+
+### キャッシュ
+
+組み込みの[ProductionContext](RayDi/Context/ProductionContext.php)では、
+`getCache`を以下のように変更することで、インジェクターをキャッシュできます。
+
+```diff
+    public function getCache(): CacheProvider
+-         return new NullCache();
++         return new Ray\RayDiForLaravel\ApcuCacheProvider(); // apcu拡張が必要
+    }
+```
+
+### カスタムコンテキスト
+
+独自のコンテキストが必要になる場合もあります。
+組み込みコンテキストを参考にカスタムコンテキストを実装し、[ContextProvider](RayDi/Context/ContextProvider.php)で利用するようにします。
+
+## パフォーマンス
+
+[DiCompileModule](https://github.com/ray-di/Ray.Compiler/blob/1.x/src/DiCompileModule.php)をインストールすることで、
+最適化されたインジェクターが利用され、依存関係エラーは実行時ではなくコンパイル時に報告されます。
+
+組み込みの[ProductionContext](RayDi/Context/ProductionContext.php)に対応する[ProductionModule](RayDi/ProductionModule.php)では、`DiCompileModule`は既にインストールされています。
