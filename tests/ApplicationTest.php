@@ -64,8 +64,6 @@ class ApplicationTest extends TestCase
     {
         $baseDir = __DIR__ . '/tmp/Ray_RayDiForLaravel_Classes_FakeCacheableContext';
         $this->assertDirectoryExists($baseDir);
-        $this->assertFileExists($baseDir . '/_aop.txt');
-        $this->assertFileExists($baseDir . '/_module.txt');
         $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_FakeInterceptor-.php');
         $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_FakeInterface-.php');
         $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_FakeInterfaceNull.php');
