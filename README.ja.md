@@ -67,36 +67,33 @@ class HelloController extends Controller
 
 ## コンテキスト
 
-[ContextProvider](RayDi/Context/ContextProvider.php) によって、アプリケーション実行時のコンテキストに応じたコンテキストクラスが生成されます。
+`RayDi/Context/ContextProvider` によって、アプリケーション実行時のコンテキストに応じたコンテキストクラスが生成されます。
 
 コンテキストクラスでモジュールとキャッシュを指定し、コンテキストに応じたインジェクターが選択されます。
 
 Ray.Di for Laravel では、組み込みコンテキストとして以下を提供しています。
 
-* [ProductionContext](RayDi/Context/ProductionContext.php)
-* [LocalContext](RayDi/Context/LocalContext.php)
-* [TestingContext](RayDi/Context/TestingContext.php)
+* `RayDi/Context/ProductionContext`
+* `RayDi/Context/LocalContext`
+* `RayDi/Context/TestingContext`
 
 ### キャッシュ
 
-組み込みの[ProductionContext](RayDi/Context/ProductionContext.php)では、
-`getCache`を以下のように変更することで、インジェクターをキャッシュできます。
-
-```diff
-    public function getCache(): CacheProvider
--         return new NullCache();
-+         return new Ray\RayDiForLaravel\ApcuCacheProvider(); // apcu拡張が必要
-    }
-```
+`RayDi/Context/ProductionContext`では、
+apcu拡張が有効な場合インジェクターをキャッシュします。
 
 ### カスタムコンテキスト
 
 独自のコンテキストが必要になる場合もあります。
-組み込みコンテキストを参考にカスタムコンテキストを実装し、[ContextProvider](RayDi/Context/ContextProvider.php)で利用するようにします。
+組み込みコンテキストを参考にカスタムコンテキストを実装し、`RayDi/Context/ContextProvider`で利用するようにします。
 
 ## パフォーマンス
 
 [DiCompileModule](https://github.com/ray-di/Ray.Compiler/blob/1.x/src/DiCompileModule.php)をインストールすることで、
 最適化されたインジェクターが利用され、依存関係エラーは実行時ではなくコンパイル時に報告されます。
 
-組み込みの[ProductionContext](RayDi/Context/ProductionContext.php)に対応する[ProductionModule](RayDi/ProductionModule.php)では、`DiCompileModule`は既にインストールされています。
+`RayDi/Context/ProductionContext`に対応する`RayDi/ProductionModule`では、`DiCompileModule`は既にインストールされています。
+
+## デモ
+
+[hello-ray-di-for-laravel](https://github.com/koriym/hello-ray-di-for-laravel) を確認してください。
