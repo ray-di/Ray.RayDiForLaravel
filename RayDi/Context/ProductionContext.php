@@ -8,7 +8,7 @@ use App\RayDi\ProductionModule;
 use Doctrine\Common\Cache\CacheProvider;
 use Ray\Compiler\AbstractInjectorContext;
 use Ray\Di\AbstractModule;
-use Ray\Di\NullCache;
+use Ray\RayDiForLaravel\ApcuCacheProvider;
 
 class ProductionContext extends AbstractInjectorContext
 {
@@ -24,7 +24,7 @@ class ProductionContext extends AbstractInjectorContext
 
     public function getCache(): CacheProvider
     {
-        return new NullCache();
+        return new ApcuCacheProvider();
     }
 
     private function getTmpDir(string $tmpDir): string
