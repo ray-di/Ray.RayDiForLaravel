@@ -33,5 +33,7 @@
     },
     "suggest": {
       "ext-apcu": "Needed to use ApcuCacheProvider"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
