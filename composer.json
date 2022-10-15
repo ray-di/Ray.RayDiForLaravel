@@ -28,7 +28,7 @@
         "doctrine/cache": "^1.10 || ^2.2"
     },
     "require-dev": {
-        "laravel/framework": "^9.8",
+        "laravel/framework": "^9.8 || ^8.83",
         "phpunit/phpunit": "^9.5"
     },
     "suggest": {
