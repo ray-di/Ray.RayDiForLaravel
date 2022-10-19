@@ -40,8 +40,6 @@ class FakeCacheableContext extends AbstractInjectorContext
 
     public function getCache(): CacheProvider
     {
-        $namespace = str_replace('\\', '_', $this::class);
-
-        return ApcuCacheProvider::create($namespace);
+        return new ApcuCacheProvider();
     }
 }

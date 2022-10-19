@@ -11,21 +11,24 @@ composer require ray/ray-di-for-laravel
 
 ## Use
 
-Copy the module that describes the binding.
+Copy the module that describes the binding, the context, and the directory where the generated files will be stored.
 
 ```
-cp -r vendor/ray/ray-di-for-laravel/Ray app
+cp -r vendor/ray/ray-di-for-laravel/RayDi app
+cp -r vendor/ray/ray-di-for-laravel/storage/ storage
 ```
 
 Change the following lines in `bootstrap/app.php`.
 
 ```diff
++ $basePath = $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__);
++ $context = getenv('APP_ENV') ?: 'local';
 - $app = new Illuminate\Foundation\Application(
 -     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 - );
 + $app = new Ray\RayDiForLaravel\Application(
-+     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__),
-+     new Ray\Di\Injector(new App\Ray\Module())
++     $basePath,
++     App\RayDi\Context\ContextProvider::get($basePath, $context)
 + );
 ```
 
@@ -61,7 +64,32 @@ class MyController extends Controller
 }
 ```
 
-In addition to the existing Laravel service container, [Ray.Di](https://ray-di.github.io/manuals/1.0/en/index.html) provides dependency resolution. AOP can be applied to all injected objects.
+## Context
+
+The `RayDi/Context/ContextProvider` generates a context class for the application runtime context.
+
+Specify the module and cache in the context class and the context-specific injector will be selected.
+
+Ray.Di for Laravel provides the following built-in contexts.
+
+* `RayDi/Context/ProductionContext`
+* `RayDi/Context/LocalContext`
+* `RayDi/Context/TestingContext.php`
+
+### Cache
+
+In the `RayDi/Context/ProductionContext`, the injector is cached if the apcu extension is enabled.
+
+### Custom context
+
+You may need your own context.
+Implement a custom context with reference to the built-in context and use it in `RayDi/Context/ContextProvider`.
+
+## Performance
+
+By installin the [DiCompileModule](https://github.com/ray-di/Ray.Compiler/blob/1.x/src/DiCompileModule.php), An optimized injector is used and dependency errors are reported at compile time, not at runtime.
+
+For `RayDi/ProductionModule` corresponding to `RayDi/Context/ProductionContext`, `DiCompileModule` is already installed.
 
 ## Demo
 

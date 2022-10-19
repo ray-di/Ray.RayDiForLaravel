@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Ray;
+namespace App\RayDi;
 
 use Ray\Di\AbstractModule;
 
-final class Module extends AbstractModule
+final class AppModule extends AbstractModule
 {
     protected function configure(): void
     {
