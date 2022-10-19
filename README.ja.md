@@ -1,4 +1,5 @@
 # Ray.Di for Laravel
+## DI+AOP, done the right way
 
 [English](README.md) | Japanese
 

@@ -1,8 +1,7 @@
 # Ray.Di for Laravel
+## DI+AOP, done the right way
 
 English | [Japanese](README.ja.md)
-
-In addition to the existing Laravel service container, [Ray.Di](https://ray-di.github.io/manuals/1.0/en/index.html) provides dependency resolution. AOP can be applied to all injected objects.
 
 ## Installation
 
