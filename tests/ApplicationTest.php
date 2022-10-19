@@ -43,10 +43,6 @@ class ApplicationTest extends TestCase
 
         $this->assertInstanceOf(IlluminateGreeting::class, $greeting);
     }
-
-    /**
-     * @requires extension apcu
-     */
     public function testCacheableContext(): void
     {
         $app = $this->createApplication(FakeCacheableContext::class);
