@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": ">=8.0",
-        "ray/di": "^2.14",
+        "ray/di": "^2.15.1",
         "ray/compiler": "^1.9.1",
         "doctrine/cache": "^1.10 || ^2.2"
     },
