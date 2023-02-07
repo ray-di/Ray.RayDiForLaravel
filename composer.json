@@ -23,12 +23,12 @@
     ],
     "require": {
         "php": ">=8.0",
-        "ray/di": "^2.14",
-        "ray/compiler": "^1.9.1",
+        "ray/di": "^2.15.1",
+        "ray/compiler": "^1.9.2",
         "doctrine/cache": "^1.10 || ^2.2"
     },
     "require-dev": {
-        "laravel/framework": "^9.8 || ^8.83",
+        "laravel/framework": "^8.83 || ^9.8 || ^10.0",
         "phpunit/phpunit": "^9.5"
     },
     "suggest": {

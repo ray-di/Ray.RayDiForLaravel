@@ -22,7 +22,7 @@ class ApcuCacheProvider extends CacheProvider
      */
     protected function doContains($id)
     {
-        return apcu_exists($id);
+        return apcu_exists($id); // @codeCoverageIgnore
     }
 
     /**
@@ -39,7 +39,7 @@ class ApcuCacheProvider extends CacheProvider
     protected function doDelete($id)
     {
         // apcu_delete returns false if the id does not exist
-        return apcu_delete($id) || ! apcu_exists($id);
+        return apcu_delete($id) || ! apcu_exists($id); // @codeCoverageIgnore
     }
 
     /**
@@ -47,9 +47,9 @@ class ApcuCacheProvider extends CacheProvider
      */
     protected function doDeleteMultiple(array $keys)
     {
-        $result = apcu_delete($keys);
+        $result = apcu_delete($keys); // @codeCoverageIgnoreStart
 
-        return $result !== false && count($result) !== count($keys);
+        return $result !== false && count($result) !== count($keys); // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -57,7 +57,7 @@ class ApcuCacheProvider extends CacheProvider
      */
     protected function doFlush()
     {
-        return apcu_clear_cache();
+        return apcu_clear_cache(); // @codeCoverageIgnore
     }
 
     /**
@@ -65,7 +65,7 @@ class ApcuCacheProvider extends CacheProvider
      */
     protected function doFetchMultiple(array $keys)
     {
-        return apcu_fetch($keys) ?: [];
+        return apcu_fetch($keys) ?: []; // @codeCoverageIgnore
     }
 
     /**
@@ -73,9 +73,9 @@ class ApcuCacheProvider extends CacheProvider
      */
     protected function doSaveMultiple(array $keysAndValues, $lifetime = 0)
     {
-        $result = apcu_store($keysAndValues, null, $lifetime);
+        $result = apcu_store($keysAndValues, null, $lifetime); // @codeCoverageIgnoreStart
 
-        return empty($result);
+        return empty($result); // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -83,7 +83,7 @@ class ApcuCacheProvider extends CacheProvider
      */
     protected function doGetStats()
     {
-        $info = apcu_cache_info(true);
+        $info = apcu_cache_info(true); // @codeCoverageIgnoreStart
         $sma  = apcu_sma_info();
 
         return [
@@ -92,6 +92,6 @@ class ApcuCacheProvider extends CacheProvider
             Cache::STATS_UPTIME           => $info['start_time'],
             Cache::STATS_MEMORY_USAGE     => $info['mem_size'],
             Cache::STATS_MEMORY_AVAILABLE => $sma['avail_mem'],
-        ];
+        ]; // @codeCoverageIgnoreEnd
     }
 }
