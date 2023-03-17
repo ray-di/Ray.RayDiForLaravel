@@ -7,13 +7,16 @@ namespace Ray\RayDiForLaravel;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use PHPUnit\Framework\TestCase;
 use Ray\Compiler\AbstractInjectorContext;
+use Ray\Di\AbstractModule;
 use Ray\RayDiForLaravel\Classes\FakeCacheableContext;
 use Ray\RayDiForLaravel\Classes\FakeContext;
 use Ray\RayDiForLaravel\Classes\FakeInvalidContext;
+use Ray\RayDiForLaravel\Classes\GreetingInterface;
 use Ray\RayDiForLaravel\Classes\GreetingServiceProvider;
 use Ray\RayDiForLaravel\Classes\IlluminateGreeting;
 use Ray\RayDiForLaravel\Classes\InjectableService;
 use Ray\RayDiForLaravel\Classes\NonInjectableService;
+use Ray\RayDiForLaravel\Classes\OverrideGreeting;
 
 class ApplicationTest extends TestCase
 {
@@ -89,6 +92,36 @@ class ApplicationTest extends TestCase
         $app = $this->createApplication(FakeInvalidContext::class);
 
         $app->make(InjectableService::class);
+    }
+
+    /** @depends testResolvedByRayWhenMarkedClassGiven  */
+    public function testOverrideModule(Application $application): Application
+    {
+        $overrideModule = new class extends AbstractModule {
+          protected function configure()
+          {
+              $this->bind(GreetingInterface::class)->to(OverrideGreeting::class);
+          }
+        };
+        $application->overrideModule($overrideModule);
+
+        $instance = $application->make(InjectableService::class);
+
+        $this->assertInstanceOf(InjectableService::class, $instance);
+        $this->assertSame('Hello, override!', $instance->run());
+
+        return $application;
+    }
+
+    /** @depends testOverrideModule */
+    public function testFlush(Application $application): void
+    {
+        $application->flush();
+
+        $instance = $application->make(InjectableService::class);
+
+        $this->assertInstanceOf(InjectableService::class, $instance);
+        $this->assertSame('Hello, Ray! Intercepted.', $instance->run());
     }
 
     /**

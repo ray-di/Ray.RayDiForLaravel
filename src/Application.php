@@ -7,6 +7,7 @@ namespace Ray\RayDiForLaravel;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Ray\Compiler\AbstractInjectorContext;
 use Ray\Compiler\ContextInjector;
+use Ray\Di\AbstractModule;
 use Ray\Di\Exception\Unbound;
 use Ray\Di\InjectorInterface;
 use Ray\RayDiForLaravel\Attribute\Injectable;
@@ -22,10 +23,15 @@ class Application extends \Illuminate\Foundation\Application
     /** @var string[] */
     private array $abstractsResolvedByRay = [];
 
+    private AbstractInjectorContext $context;
+
+    private AbstractModule|null $overrideModule = null;
+
     public function __construct(string $basePath, AbstractInjectorContext $injectorContext)
     {
         parent::__construct($basePath);
         $this->injector = ContextInjector::getInstance($injectorContext);
+        $this->context = $injectorContext;
     }
 
     protected function resolve($abstract, $parameters = [], $raiseEvents = true)
@@ -34,8 +40,10 @@ class Application extends \Illuminate\Foundation\Application
             return parent::resolve($abstract, $parameters, $raiseEvents);
         }
 
+        $injector = $this->overrideModule ? ContextInjector::getOverrideInstance($this->context, $this->overrideModule) : $this->injector;
+
         try {
-            return $this->injector->getInstance($abstract);
+            return $injector->getInstance($abstract);
         } catch (Unbound $e) {
             throw new BindingResolutionException("Failed to resolve {$abstract} by Ray's injector.", 0, $e);
         }
@@ -60,5 +68,17 @@ class Application extends \Illuminate\Foundation\Application
 
         $this->abstractsResolvedByRay[] = $abstract;
         return true;
+    }
+
+    public function flush()
+    {
+        parent::flush();
+
+        $this->overrideModule = null;
+    }
+
+    public function overrideModule(AbstractModule $module): void
+    {
+        $this->overrideModule = $module;
     }
 }
