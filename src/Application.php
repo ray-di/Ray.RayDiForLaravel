@@ -75,6 +75,7 @@ class Application extends \Illuminate\Foundation\Application
         parent::flush();
 
         $this->overrideModule = null;
+        $this->abstractsResolvedByRay = [];
     }
 
     public function overrideModule(AbstractModule $module): void
