@@ -100,7 +100,7 @@ final class HelloTest extends TestCase
 
     public function testStatusOk(): void
     {
-        $this->overrideModule(new OverrideModule());
+        $this->overrideModule(new MyModule());
     
         $res = $this->get('/hello');
 
