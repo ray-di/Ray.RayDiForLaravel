@@ -27,6 +27,9 @@ class Application extends \Illuminate\Foundation\Application
 
     private AbstractModule|null $overrideModule = null;
 
+    /** @var array<class-string<AbstractModule>, InjectorInterface> */
+    private array $overrideInjectorInstance = [];
+
     public function __construct(string $basePath, AbstractInjectorContext $injectorContext)
     {
         parent::__construct($basePath);
@@ -40,7 +43,7 @@ class Application extends \Illuminate\Foundation\Application
             return parent::resolve($abstract, $parameters, $raiseEvents);
         }
 
-        $injector = $this->overrideModule ? ContextInjector::getOverrideInstance($this->context, $this->overrideModule) : $this->injector;
+        $injector = $this->getInjector();
 
         try {
             return $injector->getInstance($abstract);
@@ -76,10 +79,29 @@ class Application extends \Illuminate\Foundation\Application
 
         $this->overrideModule = null;
         $this->abstractsResolvedByRay = [];
+        $this->overrideInjectorInstance = [];
     }
 
     public function overrideModule(AbstractModule $module): void
     {
         $this->overrideModule = $module;
+    }
+
+    private function getInjector(): InjectorInterface
+    {
+        if ($this->overrideModule === null) {
+            return $this->injector;
+        }
+
+        $overrideModuleClass = $this->overrideModule::class;
+
+        if (isset($this->overrideInjectorInstance[$overrideModuleClass])) {
+            return $this->overrideInjectorInstance[$overrideModuleClass];
+        }
+
+        $injector = ContextInjector::getOverrideInstance($this->context, $this->overrideModule);
+        $this->overrideInjectorInstance[$overrideModuleClass] = $injector;
+
+        return $injector;
     }
 }
