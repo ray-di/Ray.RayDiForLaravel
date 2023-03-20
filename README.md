@@ -85,6 +85,31 @@ In the `RayDi/Context/ProductionContext`, the injector is cached if the apcu ext
 You may need your own context.
 Implement a custom context with reference to the built-in context and use it in `RayDi/Context/ContextProvider`.
 
+### Overriding Modules
+
+When running tests, you may want to change the binding depending on the test case.
+
+Use `Ray\RayDiForLaravel\Testing\OverrideModule` in your test class and call `$this->overrideModule` as shown below.
+
+```php
+use Tests\TestCase;
+
+final class HelloTest extends TestCase
+{
+    use Ray\RayDiForLaravel\Testing\OverrideModule;
+
+    public function testStatusOk(): void
+    {
+        $this->overrideModule(new OverrideModule());
+    
+        $res = $this->get('/hello');
+
+        $res->assertOk();
+        $res->assertSeeText('Hello 1 * 2 = 2.');
+    }
+}
+```
+
 ## Performance
 
 By installin the [DiCompileModule](https://github.com/ray-di/Ray.Compiler/blob/1.x/src/DiCompileModule.php), An optimized injector is used and dependency errors are reported at compile time, not at runtime.

@@ -88,6 +88,31 @@ apcu拡張が有効な場合インジェクターをキャッシュします。
 独自のコンテキストが必要になる場合もあります。
 組み込みコンテキストを参考にカスタムコンテキストを実装し、`RayDi/Context/ContextProvider`で利用するようにします。
 
+### モジュールのオーバーライド
+
+テスト実行時にはテストケースによって束縛を変更したい場合があります。
+
+以下のように、テストクラスで `Ray\RayDiForLaravel\Testing\OverrideModule` を利用し、`$this->overrideModule` を呼び出してください。
+
+```php
+use Tests\TestCase;
+
+final class HelloTest extends TestCase
+{
+    use Ray\RayDiForLaravel\Testing\OverrideModule;
+
+    public function testStatusOk(): void
+    {
+        $this->overrideModule(new OverrideModule());
+    
+        $res = $this->get('/hello');
+
+        $res->assertOk();
+        $res->assertSeeText('Hello 1 * 2 = 2.');
+    }
+}
+```
+
 ## パフォーマンス
 
 [DiCompileModule](https://github.com/ray-di/Ray.Compiler/blob/1.x/src/DiCompileModule.php)をインストールすることで、
