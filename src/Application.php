@@ -93,14 +93,15 @@ class Application extends \Illuminate\Foundation\Application
             return $this->injector;
         }
 
-        $moduleString = md5((string) $this->overrideModule);
+        $currentModuleString = md5((string) $this->overrideModule);
 
-        if (isset($this->overrideInjectorInstance[$moduleString])) {
-            return $this->overrideInjectorInstance[$moduleString];
+        if (isset($this->overrideInjectorInstance[$currentModuleString])) {
+            return $this->overrideInjectorInstance[$currentModuleString];
         }
 
         $injector = ContextInjector::getOverrideInstance($this->context, $this->overrideModule);
-        $this->overrideInjectorInstance[$moduleString] = $injector;
+        $newModuleString = md5((string) $this->overrideModule);
+        $this->overrideInjectorInstance[$newModuleString] = $injector;
 
         return $injector;
     }
