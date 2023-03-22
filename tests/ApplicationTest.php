@@ -17,6 +17,7 @@ use Ray\RayDiForLaravel\Classes\GreetingServiceProvider;
 use Ray\RayDiForLaravel\Classes\IlluminateGreeting;
 use Ray\RayDiForLaravel\Classes\InjectableService;
 use Ray\RayDiForLaravel\Classes\NonInjectableService;
+use Ray\RayDiForLaravel\Classes\OtherModule;
 use Ray\RayDiForLaravel\Classes\OverrideGreetingModule;
 
 class ApplicationTest extends TestCase
@@ -116,6 +117,17 @@ class ApplicationTest extends TestCase
 
         $this->assertInstanceOf(InjectableService::class, $instance);
         $this->assertSame('Hello, override!', $instance->run());
+    }
+
+    /** @depends testOverrideModule */
+    public function testSameModuleAndHasParentModule(Application $application): void
+    {
+        $application->overrideModule(new OverrideGreetingModule(new OtherModule()));
+
+        $instance = $application->make(InjectableService::class);
+
+        $this->assertInstanceOf(InjectableService::class, $instance);
+        $this->assertSame('Hello, override!Fake', $instance->run());
     }
 
     /** @depends testOverrideModule */

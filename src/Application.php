@@ -27,7 +27,7 @@ class Application extends \Illuminate\Foundation\Application
 
     private AbstractModule|null $overrideModule = null;
 
-    /** @var array<class-string<AbstractModule>, InjectorInterface> */
+    /** @var array<string, InjectorInterface> */
     private array $overrideInjectorInstance = [];
 
     public function __construct(string $basePath, AbstractInjectorContext $injectorContext)
@@ -93,14 +93,14 @@ class Application extends \Illuminate\Foundation\Application
             return $this->injector;
         }
 
-        $overrideModuleClass = $this->overrideModule::class;
+        $moduleString = md5((string) $this->overrideModule);
 
-        if (isset($this->overrideInjectorInstance[$overrideModuleClass])) {
-            return $this->overrideInjectorInstance[$overrideModuleClass];
+        if (isset($this->overrideInjectorInstance[$moduleString])) {
+            return $this->overrideInjectorInstance[$moduleString];
         }
 
         $injector = ContextInjector::getOverrideInstance($this->context, $this->overrideModule);
-        $this->overrideInjectorInstance[$overrideModuleClass] = $injector;
+        $this->overrideInjectorInstance[$moduleString] = $injector;
 
         return $injector;
     }
