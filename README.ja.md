@@ -90,9 +90,8 @@ apcu拡張が有効な場合インジェクターをキャッシュします。
 
 ### モジュールのオーバーライド
 
-テスト実行時にはテストケースによって束縛を変更したい場合があります。
-
-以下のように、テストクラスで `Ray\RayDiForLaravel\Testing\OverrideModule` を利用し、`$this->overrideModule` を呼び出してください。
+テストケースによって束縛を変更したい場合があります。
+その場合は、`Ray\RayDiForLaravel\Testing\OverrideModule`を利用し、テストクラスで`$this->overrideModule` を呼び出してください。
 
 ```php
 use Tests\TestCase;
