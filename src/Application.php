@@ -27,8 +27,7 @@ class Application extends \Illuminate\Foundation\Application
 
     private AbstractModule|null $overrideModule = null;
 
-    /** @var array<string, InjectorInterface> */
-    private array $overrideInjectorInstance = [];
+    private InjectorInterface|null $overrideInjectorInstance = null;
 
     public function __construct(string $basePath, AbstractInjectorContext $injectorContext)
     {
@@ -79,12 +78,13 @@ class Application extends \Illuminate\Foundation\Application
 
         $this->overrideModule = null;
         $this->abstractsResolvedByRay = [];
-        $this->overrideInjectorInstance = [];
+        $this->overrideInjectorInstance = null;
     }
 
     public function overrideModule(AbstractModule $module): void
     {
         $this->overrideModule = $module;
+        $this->overrideInjectorInstance = null;
     }
 
     private function getInjector(): InjectorInterface
@@ -93,15 +93,12 @@ class Application extends \Illuminate\Foundation\Application
             return $this->injector;
         }
 
-        $currentModuleString = spl_object_hash($this->overrideModule);
-
-        if (isset($this->overrideInjectorInstance[$currentModuleString])) {
-            return $this->overrideInjectorInstance[$currentModuleString];
+        if ($this->overrideInjectorInstance !== null) {
+            return $this->overrideInjectorInstance;
         }
 
         $injector = ContextInjector::getOverrideInstance($this->context, $this->overrideModule);
-        $newModuleString = spl_object_hash($this->overrideModule);
-        $this->overrideInjectorInstance[$newModuleString] = $injector;
+        $this->overrideInjectorInstance = $injector;
 
         return $injector;
     }
