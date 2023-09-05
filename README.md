@@ -112,7 +112,7 @@ final class HelloTest extends TestCase
 
 ## Performance
 
-By installin the [DiCompileModule](https://github.com/ray-di/Ray.Compiler/blob/1.x/src/DiCompileModule.php), An optimized injector is used and dependency errors are reported at compile time, not at runtime.
+By installing the [DiCompileModule](https://github.com/ray-di/Ray.Compiler/blob/1.x/src/DiCompileModule.php), An optimized injector is used and dependency errors are reported at compile time, not at runtime.
 
 For `RayDi/ProductionModule` corresponding to `RayDi/Context/ProductionContext`, `DiCompileModule` is already installed.
 
