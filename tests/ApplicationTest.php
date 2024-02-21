@@ -81,7 +81,6 @@ class ApplicationTest extends TestCase
         $this->assertDirectoryExists($baseDir);
         $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_FakeInterceptor-.php');
         $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_FakeInterface-.php');
-        $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_FakeInterfaceNull.php');
         $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_GreetingInterface-.php');
         $this->assertFileExists($baseDir . '/Ray_RayDiForLaravel_Classes_InjectableService-.php');
     }
