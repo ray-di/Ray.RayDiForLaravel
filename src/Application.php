@@ -11,7 +11,6 @@ use Ray\Di\AbstractModule;
 use Ray\Di\Exception\Unbound;
 use Ray\Di\InjectorInterface;
 use Ray\RayDiForLaravel\Attribute\Injectable;
-use Ray\ServiceLocator\ServiceLocator;
 use ReflectionClass;
 use ReflectionException;
 
@@ -63,8 +62,8 @@ class Application extends \Illuminate\Foundation\Application
             return false;
         }
 
-        $annotation = ServiceLocator::getReader()->getClassAnnotation($reflectionClass, Injectable::class);
-        if ($annotation === null) {
+        $attributes = $reflectionClass->getAttributes(Injectable::class);
+        if ($attributes === []) {
             return false;
         }
 
