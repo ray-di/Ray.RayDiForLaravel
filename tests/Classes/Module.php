@@ -15,6 +15,7 @@ final class Module extends AbstractModule
         $this->bind(GreetingInterface::class)->to(RayGreeting::class)->in(Scope::SINGLETON);
         $this->bind(FakeInterface::class)->to(Fake::class);
         $this->bind(FooInterface::class)->to(Foo::class);
+        $this->bind(InjectableService::class);
         $this->bindInterceptor(
             $this->matcher->any(),
             $this->matcher->annotatedWith(StringDecorator::class),
