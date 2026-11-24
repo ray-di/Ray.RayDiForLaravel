@@ -32,8 +32,8 @@ Change the following lines in `bootstrap/app.php`.
 + );
 ```
 
-Add the `Ray\RayDiForLaravel\Attribute\Injectable` Attribute to classes or interfaces you want to resolve by Ray.Di.
-
+Add the `Ray\RayDiForLaravel\Attribute\Injectable` Attribute to classes or interfaces you want to resolve by Ray.Di, and bind them in `app/RayDi/AppModule.php`.
+Ray.Di resolves an `#[Injectable]` class from its binding in a module: ray/di 2.24 deprecates just-in-time binding of unbound concrete classes (`Just-in-time binding of unbound concrete class "..." is deprecated`), and the compiled injector of `ProductionContext` cannot resolve them.
 
 This class will be resolved by Ray.Di.
 ```php
@@ -47,6 +47,23 @@ use Ray\RayDiForLaravel\Attribute\Injectable;
 class HelloController extends Controller
 {
 
+}
+```
+
+```php
+<?php
+
+namespace App\RayDi;
+
+use App\Http\Controllers\HelloController;
+use Ray\Di\AbstractModule;
+
+final class AppModule extends AbstractModule
+{
+    protected function configure(): void
+    {
+        $this->bind(HelloController::class);
+    }
 }
 ```
 

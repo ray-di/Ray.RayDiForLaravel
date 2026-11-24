@@ -36,7 +36,8 @@ cp -r vendor/ray/ray-di-for-laravel/storage/ storage
 + );
 ```
 
-`Ray\RayDiForLaravel\Attribute\Injectable`アトリビュートをRay.Diによって解決したいクラス・インターフェースに付加します。
+`Ray\RayDiForLaravel\Attribute\Injectable`アトリビュートをRay.Diによって解決したいクラス・インターフェースに付加し、`app/RayDi/AppModule.php`で束縛します。
+Ray.Diは`#[Injectable]`クラスをモジュールの束縛から解決します。ray/di 2.24は束縛されていない具象クラスのジャストインタイム束縛を非推奨にしており（`Just-in-time binding of unbound concrete class "..." is deprecated`）、`ProductionContext`のコンパイル済みインジェクターはそのクラスを解決できません。
 
 下記クラスはRay.Diによって解決されます。
 ```php
@@ -50,6 +51,23 @@ use Ray\RayDiForLaravel\Attribute\Injectable;
 class HelloController extends Controller
 {
 
+}
+```
+
+```php
+<?php
+
+namespace App\RayDi;
+
+use App\Http\Controllers\HelloController;
+use Ray\Di\AbstractModule;
+
+final class AppModule extends AbstractModule
+{
+    protected function configure(): void
+    {
+        $this->bind(HelloController::class);
+    }
 }
 ```
 
