@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [8.0, 8.1, 8.2, 8.3, 8.4, 8.5]
+        php: [8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6]
         laravel: [8.83, 9, 10, 11, 12]
         dependency: [lowest, highest]
         os: [ubuntu-latest]
@@ -29,10 +29,14 @@ jobs:
             laravel: 8.83
           - php: 8.5
             laravel: 8.83
-          # Laravel 9.x doesn't support PHP 8.4
+          - php: 8.6
+            laravel: 8.83
+          # Laravel 9.x doesn't support PHP 8.4+
           - php: 8.4
             laravel: 9
           - php: 8.5
+            laravel: 9
+          - php: 8.6
             laravel: 9
           # Laravel 10+ requires PHP 8.1+
           - php: 8.0
@@ -79,6 +83,11 @@ jobs:
       - name: Handle lowest dependencies update
         if: contains(matrix.dependency, 'lowest')
         run: echo COMPOSER_UPDATE_FLAGS=$COMPOSER_UPDATE_FLAGS --prefer-lowest >> $GITHUB_ENV
+
+      # Every Laravel release before 12 is flagged by security advisories, which Composer refuses to install by default.
+      - name: Allow advisory-flagged Laravel releases
+        if: matrix.laravel < 12
+        run: echo COMPOSER_NO_SECURITY_BLOCKING=1 >> $GITHUB_ENV
 
       - name: Update dependencies
         run: composer update ${{ env.COMPOSER_UPDATE_FLAGS }} ${{ env.COMPOSER_FLAGS }}
