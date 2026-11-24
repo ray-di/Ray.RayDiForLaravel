@@ -26,7 +26,6 @@ class FakeCacheableContext extends AbstractInjectorContext
             protected function configure()
             {
                 $this->bind(FakeInterface::class)->toNull();
-                $this->bind(InjectableService::class);
             }
         });
 
